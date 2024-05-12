@@ -1,14 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
+import axios from "axios";
+import MealsCard from "./MealsCard";
 
-const IngredientInput = () => {
+interface MealSuggestion {
+    name: string;
+    recipe: string;
+}
+
+const IngredientInput: React.FC = () => {
     const [ingredients, setIngredients] = useState<string>("");
+    const [mealSuggestions, setMealSuggestions] = useState<MealSuggestion[]>([]);
 
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setIngredients(e.target.value);
     }
-    function handleClick() {
-        //On click we send data given in input to backend
-        //backend then finds recipes meals and sends data back to front end
+    const handleClick = async () => {
+        try {
+            const response = await axios.post<{ meals: MealSuggestion[] }>('/api/generate-meals', { ingredients });
+            setMealSuggestions(response.data.meals);
+        } catch (error) {
+            console.error("Error generating meal suggestions:", error);
+        }
     }
 
     return (
@@ -20,6 +32,7 @@ const IngredientInput = () => {
                 onChange={handleChange}
             />
             <button onClick={handleClick}>Generate</button>
+            <MealsCard mealSuggestions={mealSuggestions} />
         </div>
     );
 };
