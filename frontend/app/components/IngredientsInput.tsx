@@ -7,7 +7,7 @@ interface MealSuggestion {
     recipe: string;
 }
 
-const IngredientInput: React.FC = () => {
+const IngredientsInput: React.FC = () => {
     const [ingredients, setIngredients] = useState<string>("");
     const [mealSuggestions, setMealSuggestions] = useState<MealSuggestion[]>([]);
 
@@ -16,7 +16,8 @@ const IngredientInput: React.FC = () => {
     }
     const handleClick = async () => {
         try {
-            const response = await axios.post<{ meals: MealSuggestion[] }>('/api/generate-meals', { ingredients });
+            console.log('ingredients:', ingredients);
+            const response = await axios.post<{ meals: MealSuggestion[] }>('http://localhost:5000/api/generate-meals', { ingredients });
             setMealSuggestions(response.data.meals);
         } catch (error) {
             console.error("Error generating meal suggestions:", error);
@@ -37,4 +38,4 @@ const IngredientInput: React.FC = () => {
     );
 };
 
-export default IngredientInput;
+export default IngredientsInput;
