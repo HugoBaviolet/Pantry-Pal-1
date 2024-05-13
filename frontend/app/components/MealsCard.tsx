@@ -1,12 +1,12 @@
 import React from 'react';
 
-interface MealSuggestion {
-    name: string;
-    recipe: string;
-}
+// interface MealSuggestion {
+//     name: string;
+//     recipe: string;
+// }
 
 interface MealsProps {
-    mealSuggestions: MealSuggestion[];
+    mealSuggestions: string[];
 }
 
 const MealsCard: React.FC<MealsProps> = ({ mealSuggestions }) => {
@@ -18,8 +18,8 @@ const MealsCard: React.FC<MealsProps> = ({ mealSuggestions }) => {
                     <li key={index}>
                         {/* Render each meal suggestion */}
                         <div>
-                            <div>{meal.name}</div>
-                            <div>{meal.recipe}</div>
+                            <div>{meal}</div>
+
                         </div>
                     </li>
                 ))}

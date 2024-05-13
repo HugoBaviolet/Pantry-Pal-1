@@ -1,47 +1,62 @@
 const express = require('express'); // Import the Express.js framework
-const cors = require('cors');
+const cors = require('cors'); // Import the CORS middleware
+const OpenAI = require('openai')
+//const openai = require('openai'); // Import the OpenAI SDK
+
 const app = express(); // Create an Express application instance
-const {pipeline}  = require('@huggingface/inference'); // Import the Hugging Face Transformers pipeline
+app.use(cors()); // Enable CORS for all routes
+app.use(express.json()); // Parse JSON request bodies
 
-// Enable CORS for all routes
-app.use(cors());
-app.use(express.json());
+// OpenAI API key (replace 'your_openai_api_key' with your actual API key)
+const apiKey = 'sk-proj-VsJ28NVGIFY4nxPdvzLuT3BlbkFJfZXBAaa2XAUwbgabQ8TO';
+const openai = new OpenAI({
+  apiKey: apiKey // This is also the default, can be omitted
+});
 
-app.get('/', (req, res) => {
-    res.send('Welcome to the Pantry Pal API'); // Send a welcome message 
-  });
-  
+
+
+
+// Function to generate meal suggestions using the OpenAI GPT model
+async function generateMealSuggestions(ingredients) {
+    // Construct the prompt to ask the GPT model for meal suggestions based on ingredients
+    const prompt = `Given the ingredients ${ingredients}, suggest some meal recipes.`;
+
+    // Call the OpenAI API to complete the prompt
+    const completion = await openai.completions.create({
+        model: 'gpt-3.5-turbo-instruct', // Choose the GPT engine
+        prompt: prompt,
+        max_tokens: 200, // Maximum number of tokens in the response
+    });
+
+    // Extract and return the generated meal suggestions from the API response
+    return completion.choices.map(choice => choice.text);
+}
+
 // Route handler for POST requests to '/api/generate-meals'
 app.post('/api/generate-meals', async (req, res) => {
     try {
         const { ingredients } = req.body; // Extract the 'ingredients' from the request body
 
+        // Check if ingredients were provided
         if (!ingredients) {
             throw new Error("Ingredients data not provided");
         }
 
+        // Parse the ingredients string into a list of ingredients
         const ingredientList = ingredients.split(',').map(ingredient => ingredient.trim());
         const ingredientsString = ingredientList.join(', '); // Create a string representation of the ingredients
 
-        const mealSuggestions = await generateMealSuggestions(ingredientList); // Generate meal suggestions based on the ingredients
+        // Generate meal suggestions based on the provided ingredients
+        const mealSuggestions = await generateMealSuggestions(ingredientsString);
 
         // Send meal suggestions and ingredients string to the frontend as a JSON response
-        res.json({ meals: mealSuggestions, ingredients: ingredientsString });
+        res.json({ meals: mealSuggestions });
     } catch (error) {
         // Handle errors by logging and sending an error response
         console.error('Error generating meal suggestions: ', error);
         res.status(400).json({ error: 'Bad Request' }); // Send a 400 Bad Request status code
     }
 });
-
-
-// Function to generate meal suggestions using the Hugging Face Transformers pipeline
-async function generateMealSuggestions(ingredients) {
-    const nlpPipeline = pipeline('text-generation', { model: 'distilgpt2' }); // Create a pipeline for text generation
-    const mealSuggestions = await nlpPipeline(ingredients); // Generate meal suggestions using the provided ingredients
-
-    return mealSuggestions; // Return the generated meal suggestions
-}
 
 const PORT = process.env.PORT || 5000; // Define the port for the server to listen on
 app.listen(PORT, () => {

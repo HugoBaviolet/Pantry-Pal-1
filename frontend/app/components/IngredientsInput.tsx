@@ -2,14 +2,14 @@ import React, { useState, ChangeEvent } from "react";
 import axios from "axios";
 import MealsCard from "./MealsCard";
 
-interface MealSuggestion {
-    name: string;
-    recipe: string;
-}
+// interface MealSuggestion {
+//     name: string;
+//     recipe: string;
+// }
 
 const IngredientsInput: React.FC = () => {
     const [ingredients, setIngredients] = useState<string>("");
-    const [mealSuggestions, setMealSuggestions] = useState<MealSuggestion[]>([]);
+    const [mealSuggestions, setMealSuggestions] = useState<string[]>([]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setIngredients(e.target.value);
@@ -17,7 +17,7 @@ const IngredientsInput: React.FC = () => {
     const handleClick = async () => {
         try {
             console.log('ingredients:', ingredients);
-            const response = await axios.post<{ meals: MealSuggestion[] }>('http://localhost:5000/api/generate-meals', { ingredients });
+            const response = await axios.post<{ meals: string[] }>('http://localhost:5000/api/generate-meals', { ingredients });
             setMealSuggestions(response.data.meals);
         } catch (error) {
             console.error("Error generating meal suggestions:", error);
