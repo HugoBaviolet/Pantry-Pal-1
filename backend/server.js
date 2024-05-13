@@ -10,7 +10,7 @@ app.use(express.json()); // Parse JSON request bodies
 // OpenAI API key (replace 'your_openai_api_key' with your actual API key)
 const apiKey = 'enter api key';
 const openai = new OpenAI({
-  //apiKey: apiKey //uncomment when using
+  apiKey: apiKey 
 });
 
 
