@@ -8,7 +8,7 @@ app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Parse JSON request bodies
 
 // OpenAI API key (replace 'your_openai_api_key' with your actual API key)
-const apiKey = 'sk-proj-VsJ28NVGIFY4nxPdvzLuT3BlbkFJfZXBAaa2XAUwbgabQ8TO';
+const apiKey = '';
 const openai = new OpenAI({
   apiKey: apiKey // This is also the default, can be omitted
 });
