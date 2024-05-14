@@ -8,24 +8,21 @@ app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Parse JSON request bodies
 
 // OpenAI API key (replace 'your_openai_api_key' with your actual API key)
-const apiKey = 'enter api key';
+const apiKey = 'Use Api Key'; //use key
 const openai = new OpenAI({
   apiKey: apiKey 
 });
 
-
-
-
 // Function to generate meal suggestions using the OpenAI GPT model
 async function generateMealSuggestions(ingredients) {
     // Construct the prompt to ask the GPT model for meal suggestions based on ingredients
-    const prompt = `Given the ingredients ${ingredients}, suggest some meal recipes.`;
+    const prompt = `Given the ingredients ${ingredients}, suggest 3 meals with recipes use a : to format each meal name`;
 
     // Call the OpenAI API to complete the prompt
     const completion = await openai.completions.create({
         model: 'gpt-3.5-turbo-instruct', // Choose the GPT engine
         prompt: prompt,
-        max_tokens: 200, // Maximum number of tokens in the response
+        max_tokens: 1000, // Maximum number of tokens in the response
     });
 
     // Extract and return the generated meal suggestions from the API response

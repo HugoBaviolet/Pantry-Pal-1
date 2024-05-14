@@ -18,8 +18,7 @@ const MealsCard: React.FC<MealsProps> = ({ mealSuggestions }) => {
                     <li key={index}>
                         {/* Render each meal suggestion */}
                         <div>
-                            <div>{meal}</div>
-
+                            <p>{meal}</p>
                         </div>
                     </li>
                 ))}
