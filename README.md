@@ -1,4 +1,5 @@
 ## Description
+I worked on this project to attempt to build a project that involved both frontend and backend. I also found it very interesting learning how to implement AI into this as well as connecting the frontend and backend together.
 Pantry Pal is a personal project where a user can input ingredients and get meals and recipes given back. 
 I used OpenAI API to integrate AI to get the recipes based on the users input. 
 
