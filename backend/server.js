@@ -1,3 +1,5 @@
+require('dotenv').config(); //automatically load API key
+
 const express = require('express'); // Import the Express.js framework
 const cors = require('cors'); // Import the CORS middleware
 const OpenAI = require('openai')
@@ -8,7 +10,7 @@ app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Parse JSON request bodies
 
 // OpenAI API key (replace 'your_openai_api_key' with your actual API key)
-const apiKey = 'Use Api Key'; //use key
+const apiKey = process.env.REACT_APP_API_KEY;; //use key
 const openai = new OpenAI({
   apiKey: apiKey 
 });

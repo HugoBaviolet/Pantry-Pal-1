@@ -1,10 +1,5 @@
 import React from 'react';
 
-// interface MealSuggestion {
-//     name: string;
-//     recipe: string;
-// }
-
 interface MealsProps {
     mealSuggestions: string[];
 }
