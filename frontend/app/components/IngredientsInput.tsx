@@ -21,15 +21,16 @@ const IngredientsInput: React.FC = () => {
     }
 
     return (
-        <div>
+        <div className="flex flex-col items-center">
+            <h3 className="">Enter Ingredients:</h3>
             <input
                 type="text"
                 value={ingredients}
                 placeholder="Enter Ingredients"
                 onChange={handleChange}
-                className="m-2 px-2"
+                className="m-2 px-2 text-center space-y-2 border-4 border-blue-500 border-opacity-75 rounded-md"
             />
-            <button onClick={handleClick}>Generate</button>
+            <button onClick={handleClick} className="border-4 border-blue-500 border-opacity-75 rounded-md bg-blue-500 text-white">Generate</button>
             {mealSuggestions.length > 0 && <MealsCard mealSuggestions={mealSuggestions} />}
         </div>
     );

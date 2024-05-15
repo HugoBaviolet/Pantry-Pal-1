@@ -18,7 +18,7 @@ const openai = new OpenAI({
 // Function to generate meal suggestions using the OpenAI GPT model
 async function generateMealSuggestions(ingredients) {
     // Construct the prompt to ask the GPT model for meal suggestions based on ingredients
-    const prompt = `Given the ingredients ${ingredients}, suggest 3 meals with recipes use a : to format each meal name`;
+    const prompt = `Given the ingredients ${ingredients}, suggest 3 meals with recipes. Use ':' to format each meal name and recipe.`;
 
     // Call the OpenAI API to complete the prompt
     const completion = await openai.completions.create({
@@ -27,8 +27,15 @@ async function generateMealSuggestions(ingredients) {
         max_tokens: 1000, // Maximum number of tokens in the response
     });
 
-    // Extract and return the generated meal suggestions from the API response
-    return completion.choices.map(choice => choice.text);
+        // Extract and return the generated meal suggestions from the API response
+        const suggestions = completion.choices[0].text.split(/\d+\)\s+/).filter(item => item.trim() !== '');
+        return suggestions.map(suggestion => {
+            const parts = suggestion.split('\n');
+            return {
+                meal: parts[0].trim(), // Extract meal name
+                recipe: parts.slice(1).join('\n').trim() // Extract recipe
+            };
+        });
 }
 
 // Route handler for POST requests to '/api/generate-meals'
